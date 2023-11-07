@@ -1,4 +1,5 @@
 [MASTER]
+load-plugins=deprecated_decorator
 disable=
     similarities,
     C0114, # missing-module-docstring

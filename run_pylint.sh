@@ -11,7 +11,7 @@ if [ -n "${CHANGED_FILES}" ]; then
     echo "${CHANGED_FILES}"
     # Ignore shellcheck for variable without quotes
     # shellcheck disable=SC2086
-    pylint --rcfile=./ci/cfg/.pylintrc  ${CHANGED_FILES}
+    pylint --rcfile=./ci/cfg/.pylintrc --load-plugins=deprecated_decorator ${CHANGED_FILES}
 fi
 
 exit 0

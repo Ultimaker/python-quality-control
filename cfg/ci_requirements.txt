@@ -11,3 +11,4 @@ pytest-profiling==1.7.0
 pytest-raises==0.11
 vulture==2.3
 pylint==2.13.9
+pylint-deprecated-decorator==0.2.4
