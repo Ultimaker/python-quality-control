@@ -1,0 +1,18 @@
+on:
+  workflow_call:
+  
+jobs:
+  Flake8:
+    name: 'Flake8'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          submodules: recursive
+         
+      - name: Flake8
+        id: flake8
+        run: |
+          ./build_for_ultimaker.sh -a flake8
