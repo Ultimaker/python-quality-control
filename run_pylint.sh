@@ -1,7 +1,8 @@
-#!/bin/sh
-. ci/references.sh
-
+#!/bin/bash
 set -eu
+
+SCRIPT_DIR=$(dirname "${0}")
+source "${SCRIPT_DIR}/references.sh"
 
 # Log version to track if the non specified version has changed and is breaking stuff.
 pylint --version
