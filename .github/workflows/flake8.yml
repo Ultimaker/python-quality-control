@@ -11,8 +11,26 @@ jobs:
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           submodules: recursive
+
+      - name: List Files
+        run: |
+          ls -Rlh *
          
       - name: Flake8
         id: flake8
         run: |
           ./build_for_ultimaker.sh -a flake8
+
+      - name: Dump GitHub context
+        if: ${{ always() }}
+        env:
+           GITHUB_CONTEXT: ${{ toJson(github) }}
+           JOB_CONTEXT: ${{ toJson(job) }}
+           STEPS_CONTEXT: ${{ toJson(steps) }}
+           RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: |
+          echo "${GITHUB_CONTEXT}"
+          echo "${JOB_CONTEXT}"
+          echo "${STEPS_CONTEXT}"
+          echo "${RUNNER_CONTEXT}"
+          
