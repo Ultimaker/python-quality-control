@@ -4,8 +4,11 @@ on:
       PARENT_BRANCH:
         description: "The master/main branch of the repository to compare files againt"
         type: string
-        required: false
-        default: 'main'
+        required: true
+      PYTHON_QUALITY_DIR:
+        description: "The relative dir in the repository where Python Quality Control is mounted as submodule"
+        type: string
+        required: true
           
 jobs:
   Flake8:
@@ -23,7 +26,8 @@ jobs:
         run: |
           export PARENT_BRANCH="${{ inputs.PARENT_BRANCH }}"
           git fetch origin "${PARENT_BRANCH}":"${PARENT_BRANCH}"
-          ./build_for_ultimaker.sh -a flake8
+          source ./docker_env/make_docker.sh ""
+          run_in_docker "./${{ inputs.PYTHON_QUALITY_DIR }}/run_flake8.sh"
 
       - name: Dump GitHub context
         if: ${{ always() }}
