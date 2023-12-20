@@ -11,7 +11,7 @@ on:
         required: true
           
 jobs:
-  Flake8:
+  MyPy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -20,12 +20,12 @@ jobs:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           submodules: recursive
 
-      - name: Flake8
+      - name: MyPy
         run: |
           export PARENT_BRANCH="${{ inputs.PARENT_BRANCH }}"
           git fetch origin "${PARENT_BRANCH}":"${PARENT_BRANCH}"
           source ./docker_env/make_docker.sh ""
-          run_in_docker "./${{ inputs.PYTHON_QUALITY_DIR }}/run_flake8.sh"
+          run_in_docker "./${{ inputs.PYTHON_QUALITY_DIR }}/run_mypy.sh"
 
       - name: Dump GitHub context
         if: ${{ always() }}
