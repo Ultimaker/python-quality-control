@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eux
+set -eu
 
 SCRIPT_DIR=$(dirname "${0}")
 # shellcheck disable=SC1091

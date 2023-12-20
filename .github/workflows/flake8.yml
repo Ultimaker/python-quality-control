@@ -21,9 +21,8 @@ jobs:
       - name: Flake8
         id: flake8
         run: |
-          set -x
           export PARENT_BRANCH="${{ inputs.PARENT_BRANCH }}"
-          git fetch origin main:main
+          git fetch origin "${PARENT_BRANCH}":"${PARENT_BRANCH}"
           ./build_for_ultimaker.sh -a flake8
 
       - name: Dump GitHub context
