@@ -1,11 +1,18 @@
 on:
   workflow_call:
     inputs:
+
       PYTHON_QUALITY_DIR:
         description: "The relative dir in the repository where Python Quality Control is mounted as submodule"
         type: string
         required: true
-          
+
+      clone_dbus-interface-lib:
+        description: "Yes if the unit test for this repo requires dbus-interface-lib"
+        type: boolean
+        required: false
+        default: false
+
 jobs:
   PyTest:
     runs-on: ubuntu-latest
@@ -15,9 +22,34 @@ jobs:
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           submodules: recursive
+          path: repo_under_test
+
+      - name: Checkout dbus-interface-lib for branch ${{ github.ref_name }}
+        id: dbus_checkout
+        if: ${{ inputs.clone_dbus-interface-lib }}
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/dbus-interface-lib
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}  # Use organization level secret for ultimaker-ci machine user
+          path: dbus-interface-lib
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+          
+      - name: OPTIONAL Checkout dbus-interface-lib for the default branch
+        if: ${{ inputs.clone_dbus-interface-lib && steps.dbus_checkout.outcome == 'failure' }}
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/dbus-interface-lib
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}  # Use organization level secret for ultimaker-ci machine user
+          path: dbus-interface-lib
+          fetch-depth: 0    
 
       - name: PyTest
         run: |
+          pwd
+          ls -lha
+          ls -lha ..
           source ./docker_env/make_docker.sh ""
           run_in_docker "./${{ inputs.PYTHON_QUALITY_DIR }}/run_pytest.sh"
 
