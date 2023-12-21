@@ -17,13 +17,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           submodules: recursive
 
       - name: PyLint
         run: |
           export PARENT_BRANCH="${{ inputs.PARENT_BRANCH }}"
-          git fetch origin "${PARENT_BRANCH}":"${PARENT_BRANCH}"
           source ./docker_env/make_docker.sh ""
           run_in_docker "./${{ inputs.PYTHON_QUALITY_DIR }}/run_pylint.sh"
 
