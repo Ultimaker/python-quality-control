@@ -43,15 +43,19 @@ jobs:
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           submodules: recursive
+          path: repo_under_test
 
       - name: PyTest
         run: |
+          cd repo_under_test
           echo "Current path:"
           pwd
           echo "Current dir list:"
           ls -lha
           echo "Parent dir list:"
           ls -lha ..
+          echo "Parent of Parent dir list:"
+          ls -lha ../..
           echo "Loading make_docker:"
           source ./docker_env/make_docker.sh ""
           run_in_docker "./${{ inputs.PYTHON_QUALITY_DIR }}/run_pytest.sh"
