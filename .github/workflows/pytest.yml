@@ -66,140 +66,104 @@ jobs:
         if: ${{ inputs.dbus-interface-lib }}
         continue-on-error: true
         run: |
-          pwd
-          ls -lha
           cd dbus-interface-lib
-          pwd
-          ls -lha
-          git rev-parse --abbrev-ref HEAD
           git checkout ${{ github.ref_name }}
-          git rev-parse --abbrev-ref HEAD
-          
-      - name: Checkout marvin-service for branch ${{ github.ref_name }}
-        id: marvin-service
+
+      - name: Clone marvin-service on default branch
+        if: ${{ inputs.marvin-service }}
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/marvin-service
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: marvin-service
+          fetch-depth: 0
+
+      - name: Trying to checkout marvin-service on branch ${{ github.ref_name }}
         if: ${{ inputs.marvin-service }}
         continue-on-error: true
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/marvin-service
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: marvin-service
-          ref: ${{ github.ref_name }}
-          fetch-depth: 0
-          
-      - name: OPTIONAL Checkout marvin-service for the default branch
-        if: ${{ inputs.marvin-service && steps.marvin-service.outcome == 'failure' }}
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/marvin-service
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: marvin-service
-          fetch-depth: 0    
+        run: |
+          cd marvin-service
+          git checkout ${{ github.ref_name }}
 
-      - name: Checkout libPalantir for branch ${{ github.ref_name }}
-        id: libPalantir
+      - name: Clone libPalantir on default branch
+        if: ${{ inputs.libPalantir }}
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/libPalantir
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: libPalantir
+          fetch-depth: 0
+
+      - name: Trying to checkout libPalantir on branch ${{ github.ref_name }}
         if: ${{ inputs.libPalantir }}
         continue-on-error: true
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/libPalantir
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: libPalantir
-          ref: ${{ github.ref_name }}
-          fetch-depth: 0
-          
-      - name: OPTIONAL Checkout libPalantir for the default branch
-        if: ${{ inputs.libPalantir && steps.libPalantir.outcome == 'failure' }}
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/libPalantir
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: libPalantir
-          fetch-depth: 0    
+        run: |
+          cd libPalantir
+          git checkout ${{ github.ref_name }}
 
-      - name: Checkout libSmeagol for branch ${{ github.ref_name }}
-        id: libSmeagol
+      - name: Clone libSmeagol on default branch
+        if: ${{ inputs.libSmeagol }}
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/libSmeagol
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: libSmeagol
+          fetch-depth: 0
+
+      - name: Trying to checkout libSmeagol on branch ${{ github.ref_name }}
         if: ${{ inputs.libSmeagol }}
         continue-on-error: true
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/libSmeagol
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: libSmeagol
-          ref: ${{ github.ref_name }}
-          fetch-depth: 0
-          
-      - name: OPTIONAL Checkout libSmeagol for the default branch
-        if: ${{ inputs.libSmeagol && steps.libSmeagol.outcome == 'failure' }}
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/libSmeagol
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: libSmeagol
-          fetch-depth: 0    
+        run: |
+          cd libSmeagol
+          git checkout ${{ github.ref_name }}
 
-      - name: Checkout libCharon for branch ${{ github.ref_name }}
-        id: libCharon
+      - name: Clone libCharon on default branch
+        if: ${{ inputs.libCharon }}
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/libCharon
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: libCharon
+          fetch-depth: 0
+
+      - name: Trying to checkout libCharon on branch ${{ github.ref_name }}
         if: ${{ inputs.libCharon }}
         continue-on-error: true
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/libCharon
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: libCharon
-          ref: ${{ github.ref_name }}
-          fetch-depth: 0
-          
-      - name: OPTIONAL Checkout libCharon for the default branch
-        if: ${{ inputs.libCharon && steps.libCharon.outcome == 'failure' }}
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/libCharon
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: libCharon
-          fetch-depth: 0    
+        run: |
+          cd libCharon
+          git checkout ${{ github.ref_name }}
 
-      - name: Checkout libLogger for branch ${{ github.ref_name }}
-        id: libLogger
+      - name: Clone libLogger on default branch
+        if: ${{ inputs.libLogger }}
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/libLogger
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: libLogger
+          fetch-depth: 0
+
+      - name: Trying to checkout libLogger on branch ${{ github.ref_name }}
         if: ${{ inputs.libLogger }}
         continue-on-error: true
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/libLogger
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: libLogger
-          ref: ${{ github.ref_name }}
-          fetch-depth: 0
-          
-      - name: OPTIONAL Checkout libLogger for the default branch
-        if: ${{ inputs.libLogger && steps.libLogger.outcome == 'failure' }}
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/libLogger
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: libLogger
-          fetch-depth: 0    
+        run: |
+          cd libLogger
+          git checkout ${{ github.ref_name }}
 
-      - name: Checkout ultiLib for branch ${{ github.ref_name }}
-        id: ultiLib
+      - name: Clone ultiLib on default branch
+        if: ${{ inputs.ultiLib }}
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/ultiLib
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: ultiLib
+          fetch-depth: 0
+
+      - name: Trying to checkout ultiLib on branch ${{ github.ref_name }}
         if: ${{ inputs.ultiLib }}
         continue-on-error: true
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/ultiLib
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: ultiLib
-          ref: ${{ github.ref_name }}
-          fetch-depth: 0
-          
-      - name: OPTIONAL Checkout ultiLib for the default branch
-        if: ${{ inputs.ultiLib && steps.ultiLib.outcome == 'failure' }}
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/ultiLib
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: ultiLib
-          fetch-depth: 0    
+        run: |
+          cd ultiLib
+          git checkout ${{ github.ref_name }}
 
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -210,8 +174,6 @@ jobs:
 
       - name: PyTest
         run: |
-          pwd
-          ls -lha
           cd repo_under_test
           source ./docker_env/make_docker.sh ""
           run_in_docker "./${{ inputs.PYTHON_QUALITY_DIR }}/run_pytest.sh"
