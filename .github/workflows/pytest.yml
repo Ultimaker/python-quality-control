@@ -71,7 +71,8 @@ jobs:
           cd dbus-interface-lib
           pwd
           ls -lha
-          git fetch ${{ github.ref_name }} || "echo Branch ${{ github.ref_name }} not found, using default branch"
+          git rev-parse --abbrev-ref HEAD
+          git checkout ${{ github.ref_name }}
           git rev-parse --abbrev-ref HEAD
           
       - name: Checkout marvin-service for branch ${{ github.ref_name }}
