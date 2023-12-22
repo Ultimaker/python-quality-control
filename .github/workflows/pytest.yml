@@ -37,6 +37,18 @@ on:
         required: false
         default: false
 
+      libLogger:
+        description: "Yes if the unit test for this repo requires libLogger"
+        type: boolean
+        required: false
+        default: false
+
+      ultiLib:
+        description: "Yes if the unit test for this repo requires ultiLib"
+        type: boolean
+        required: false
+        default: false
+
 jobs:
   PyTest:
     runs-on: ubuntu-latest
@@ -144,6 +156,48 @@ jobs:
           repository: Ultimaker/libCharon
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           path: libCharon
+          fetch-depth: 0    
+
+      - name: Checkout libLogger for branch ${{ github.ref_name }}
+        id: libLogger
+        if: ${{ inputs.libLogger }}
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/libLogger
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: libLogger
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+          
+      - name: OPTIONAL Checkout libLogger for the default branch
+        if: ${{ inputs.libLogger && steps.libLogger.outcome == 'failure' }}
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/libLogger
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: libLogger
+          fetch-depth: 0    
+
+      - name: Checkout ultiLib for branch ${{ github.ref_name }}
+        id: ultiLib
+        if: ${{ inputs.ultiLib }}
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/ultiLib
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: ultiLib
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+          
+      - name: OPTIONAL Checkout ultiLib for the default branch
+        if: ${{ inputs.ultiLib && steps.ultiLib.outcome == 'failure' }}
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/ultiLib
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: ultiLib
           fetch-depth: 0    
 
       - name: Checkout Repository
