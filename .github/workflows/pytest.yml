@@ -53,16 +53,18 @@ jobs:
   PyTest:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout dbus-interface-lib for branch ${{ github.ref_name }}
-        id: dbus-interface-lib
+      - name: Clone dbus-interface-lib on default branch
         if: ${{ inputs.dbus-interface-lib }}
         uses: actions/checkout@v4
         with:
           repository: Ultimaker/dbus-interface-lib
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           path: dbus-interface-lib
-          ref: ${{ github.ref_name }}
           fetch-depth: 0
+
+      - name: Trying to checkout dbus-interface-lib on branch ${{ github.ref_name }}
+        if: ${{ inputs.dbus-interface-lib }}
+        continue-on-error: true
         run: |
           pwd
           ls -lha
