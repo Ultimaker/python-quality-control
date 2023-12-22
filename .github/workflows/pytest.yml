@@ -56,7 +56,6 @@ jobs:
       - name: Checkout dbus-interface-lib for branch ${{ github.ref_name }}
         id: dbus-interface-lib
         if: ${{ inputs.dbus-interface-lib }}
-        continue-on-error: true
         uses: actions/checkout@v4
         with:
           repository: Ultimaker/dbus-interface-lib
@@ -64,16 +63,15 @@ jobs:
           path: dbus-interface-lib
           ref: ${{ github.ref_name }}
           fetch-depth: 0
+        run: |
+          pwd
+          ls -lha
+          cd dbus-interface-lib
+          pwd
+          ls -lha
+          git fetch ${{ github.ref_name }} || "echo Branch ${{ github.ref_name }} not found, using default branch"
+          git rev-parse --abbrev-ref HEAD
           
-      - name: OPTIONAL Checkout dbus-interface-lib for the default branch
-        if: ${{ inputs.dbus-interface-lib && steps.dbus-interface-lib.outcome == 'failure' }}
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/dbus-interface-lib
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: dbus-interface-lib
-          fetch-depth: 0    
-
       - name: Checkout marvin-service for branch ${{ github.ref_name }}
         id: marvin-service
         if: ${{ inputs.marvin-service }}
@@ -209,6 +207,8 @@ jobs:
 
       - name: PyTest
         run: |
+          pwd
+          ls -lha
           cd repo_under_test
           source ./docker_env/make_docker.sh ""
           run_in_docker "./${{ inputs.PYTHON_QUALITY_DIR }}/run_pytest.sh"
