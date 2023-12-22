@@ -7,8 +7,32 @@ on:
         type: string
         required: true
 
-      clone_dbus-interface-lib:
+      dbus-interface-lib:
         description: "Yes if the unit test for this repo requires dbus-interface-lib"
+        type: boolean
+        required: false
+        default: false
+
+      marvin-service:
+        description: "Yes if the unit test for this repo requires marvin-service"
+        type: boolean
+        required: false
+        default: false
+
+      libPalantir:
+        description: "Yes if the unit test for this repo requires libPalantir"
+        type: boolean
+        required: false
+        default: false
+
+      libSmeagol:
+        description: "Yes if the unit test for this repo requires libSmeagol"
+        type: boolean
+        required: false
+        default: false
+
+      libCharon:
+        description: "Yes if the unit test for this repo requires libCharon"
         type: boolean
         required: false
         default: false
@@ -18,24 +42,108 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout dbus-interface-lib for branch ${{ github.ref_name }}
-        id: dbus_checkout
-        if: ${{ inputs.clone_dbus-interface-lib }}
+        id: dbus-interface-lib
+        if: ${{ inputs.dbus-interface-lib }}
         continue-on-error: true
         uses: actions/checkout@v4
         with:
           repository: Ultimaker/dbus-interface-lib
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}  # Use organization level secret for ultimaker-ci machine user
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
           path: dbus-interface-lib
           ref: ${{ github.ref_name }}
           fetch-depth: 0
           
       - name: OPTIONAL Checkout dbus-interface-lib for the default branch
-        if: ${{ inputs.clone_dbus-interface-lib && steps.dbus_checkout.outcome == 'failure' }}
+        if: ${{ inputs.dbus-interface-lib && steps.dbus_checkout.outcome == 'failure' }}
         uses: actions/checkout@v4
         with:
           repository: Ultimaker/dbus-interface-lib
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}  # Use organization level secret for ultimaker-ci machine user
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
           path: dbus-interface-lib
+          fetch-depth: 0    
+
+      - name: Checkout marvin-service for branch ${{ github.ref_name }}
+        id: marvin-service
+        if: ${{ inputs.marvin-service }}
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/marvin-service
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: marvin-service
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+          
+      - name: OPTIONAL Checkout marvin-service for the default branch
+        if: ${{ inputs.marvin-service && steps.dbus_checkout.outcome == 'failure' }}
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/marvin-service
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: include_marvin-service
+          fetch-depth: 0    
+
+      - name: Checkout libPalantir for branch ${{ github.ref_name }}
+        id: libPalantir
+        if: ${{ inputs.libPalantir }}
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/libPalantir
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: libPalantir
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+          
+      - name: OPTIONAL Checkout libPalantir for the default branch
+        if: ${{ inputs.libPalantir && steps.dbus_checkout.outcome == 'failure' }}
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/libPalantir
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: libPalantir
+          fetch-depth: 0    
+
+      - name: Checkout libSmeagol for branch ${{ github.ref_name }}
+        id: libSmeagol
+        if: ${{ inputs.libSmeagol }}
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/libSmeagol
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: libSmeagol
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+          
+      - name: OPTIONAL Checkout libSmeagol for the default branch
+        if: ${{ inputs.libSmeagol && steps.dbus_checkout.outcome == 'failure' }}
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/libSmeagol
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: libSmeagol
+          fetch-depth: 0    
+
+      - name: Checkout libCharon for branch ${{ github.ref_name }}
+        id: libCharon
+        if: ${{ inputs.libCharon }}
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/libCharon
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: libCharon
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+          
+      - name: OPTIONAL Checkout libCharon for the default branch
+        if: ${{ inputs.libCharon && steps.dbus_checkout.outcome == 'failure' }}
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/libCharon
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          path: libCharon
           fetch-depth: 0    
 
       - name: Checkout Repository
@@ -48,15 +156,6 @@ jobs:
       - name: PyTest
         run: |
           cd repo_under_test
-          echo "Current path:"
-          pwd
-          echo "Current dir list:"
-          ls -lha
-          echo "Parent dir list:"
-          ls -lha ..
-          echo "Parent of Parent dir list:"
-          ls -lha ../..
-          echo "Loading make_docker:"
           source ./docker_env/make_docker.sh ""
           run_in_docker "./${{ inputs.PYTHON_QUALITY_DIR }}/run_pytest.sh"
 
