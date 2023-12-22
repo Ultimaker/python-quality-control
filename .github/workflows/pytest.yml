@@ -80,7 +80,7 @@ jobs:
         with:
           repository: Ultimaker/marvin-service
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: include_marvin-service
+          path: marvin-service
           fetch-depth: 0    
 
       - name: Checkout libPalantir for branch ${{ github.ref_name }}
