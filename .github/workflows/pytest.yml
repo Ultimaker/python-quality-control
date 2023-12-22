@@ -54,7 +54,7 @@ jobs:
           fetch-depth: 0
           
       - name: OPTIONAL Checkout dbus-interface-lib for the default branch
-        if: ${{ inputs.dbus-interface-lib && steps.dbus_checkout.outcome == 'failure' }}
+        if: ${{ inputs.dbus-interface-lib && steps.dbus-interface-lib.outcome == 'failure' }}
         uses: actions/checkout@v4
         with:
           repository: Ultimaker/dbus-interface-lib
@@ -75,7 +75,7 @@ jobs:
           fetch-depth: 0
           
       - name: OPTIONAL Checkout marvin-service for the default branch
-        if: ${{ inputs.marvin-service && steps.dbus_checkout.outcome == 'failure' }}
+        if: ${{ inputs.marvin-service && steps.marvin-service.outcome == 'failure' }}
         uses: actions/checkout@v4
         with:
           repository: Ultimaker/marvin-service
@@ -96,7 +96,7 @@ jobs:
           fetch-depth: 0
           
       - name: OPTIONAL Checkout libPalantir for the default branch
-        if: ${{ inputs.libPalantir && steps.dbus_checkout.outcome == 'failure' }}
+        if: ${{ inputs.libPalantir && steps.libPalantir.outcome == 'failure' }}
         uses: actions/checkout@v4
         with:
           repository: Ultimaker/libPalantir
@@ -117,7 +117,7 @@ jobs:
           fetch-depth: 0
           
       - name: OPTIONAL Checkout libSmeagol for the default branch
-        if: ${{ inputs.libSmeagol && steps.dbus_checkout.outcome == 'failure' }}
+        if: ${{ inputs.libSmeagol && steps.libSmeagol.outcome == 'failure' }}
         uses: actions/checkout@v4
         with:
           repository: Ultimaker/libSmeagol
@@ -138,7 +138,7 @@ jobs:
           fetch-depth: 0
           
       - name: OPTIONAL Checkout libCharon for the default branch
-        if: ${{ inputs.libCharon && steps.dbus_checkout.outcome == 'failure' }}
+        if: ${{ inputs.libCharon && steps.libCharon.outcome == 'failure' }}
         uses: actions/checkout@v4
         with:
           repository: Ultimaker/libCharon
