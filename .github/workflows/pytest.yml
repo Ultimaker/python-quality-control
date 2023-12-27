@@ -1,48 +1,36 @@
 on:
   workflow_call:
     inputs:
-
-      PYTHON_QUALITY_DIR:
-        description: "The relative dir in the repository where Python Quality Control is mounted as submodule"
-        type: string
-        required: true
-
       dbus-interface-lib:
         description: "Yes if the unit test for this repo requires dbus-interface-lib"
         type: boolean
         required: false
         default: false
-
       marvin-service:
         description: "Yes if the unit test for this repo requires marvin-service"
         type: boolean
         required: false
         default: false
-
       libPalantir:
         description: "Yes if the unit test for this repo requires libPalantir"
         type: boolean
         required: false
         default: false
-
       libSmeagol:
         description: "Yes if the unit test for this repo requires libSmeagol"
         type: boolean
         required: false
         default: false
-
       libCharon:
         description: "Yes if the unit test for this repo requires libCharon"
         type: boolean
         required: false
         default: false
-
       libLogger:
         description: "Yes if the unit test for this repo requires libLogger"
         type: boolean
         required: false
         default: false
-
       ultiLib:
         description: "Yes if the unit test for this repo requires ultiLib"
         type: boolean
@@ -76,7 +64,7 @@ jobs:
         run: |
           cd repo_under_test
           source ./docker_env/make_docker.sh ""
-          run_in_docker "./${{ inputs.PYTHON_QUALITY_DIR }}/run_pytest.sh"
+          run_in_docker "./ci/run_pytest.sh"
 
       - name: Dump GitHub context
         if: ${{ always() }}
