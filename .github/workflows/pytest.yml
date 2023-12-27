@@ -62,6 +62,13 @@ jobs:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           repository: marvin-service
 
+      - name: Clone libPalantir
+        if: ${{ inputs.libPalantir }}
+        uses: ./repo_under_test/ci/.github/actions/clone_repo
+        with:
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          repository: libPalantir
+
       - name: Clone libSmeagol
         if: ${{ inputs.libSmeagol }}
         uses: ./repo_under_test/ci/.github/actions/clone_repo
