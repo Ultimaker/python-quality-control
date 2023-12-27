@@ -32,6 +32,7 @@ runs:
     - name: Trying to checkout ${{ inputs.repository }} on branch ${{ github.ref_name }}
       shell: bash
       run: |
+        echo -e "\n\n###########  Fetching ${{ inputs.repository }} Repository ###########\n\n"
         cd ${{ inputs.repository }}
         if git checkout ${{ github.ref_name }}; then
           echo "Branch ${{ github.ref_name }} successfully checked-out"
