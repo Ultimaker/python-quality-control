@@ -1,41 +1,6 @@
 on:
   workflow_call:
     inputs:
-      dbus-interface-lib:
-        description: "Yes if the unit test for this repo requires dbus-interface-lib"
-        type: boolean
-        required: false
-        default: false
-      marvin-service:
-        description: "Yes if the unit test for this repo requires marvin-service"
-        type: boolean
-        required: false
-        default: false
-      libPalantir:
-        description: "Yes if the unit test for this repo requires libPalantir"
-        type: boolean
-        required: false
-        default: false
-      libSmeagol:
-        description: "Yes if the unit test for this repo requires libSmeagol"
-        type: boolean
-        required: false
-        default: false
-      libCharon:
-        description: "Yes if the unit test for this repo requires libCharon"
-        type: boolean
-        required: false
-        default: false
-      libLogger:
-        description: "Yes if the unit test for this repo requires libLogger"
-        type: boolean
-        required: false
-        default: false
-      ultiLib:
-        description: "Yes if the unit test for this repo requires ultiLib"
-        type: boolean
-        required: false
-        default: false
       default-branch:
         description: "Branch to checkout if the project uses a different default branch from the one set in github"
         type: string
@@ -53,60 +18,10 @@ jobs:
           submodules: recursive
           path: repo_under_test
 
-      - name: Clone dbus-interface-lib
-        if: ${{ inputs.dbus-interface-lib }}
-        uses: ./repo_under_test/ci/.github/actions/clone_repo
+      - name: Fetch Companion Repositories
+        uses: ./repo_under_test/ci/.github/actions/fetch_companion_repos
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          repository: dbus-interface-lib
-          default-branch: ${{ inputs.default-branch }}
-
-      - name: Clone marvin-service
-        if: ${{ inputs.marvin-service }}
-        uses: ./repo_under_test/ci/.github/actions/clone_repo
-        with:
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          repository: marvin-service
-          default-branch: ${{ inputs.default-branch }}
-
-      - name: Clone libPalantir
-        if: ${{ inputs.libPalantir }}
-        uses: ./repo_under_test/ci/.github/actions/clone_repo
-        with:
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          repository: libPalantir
-          default-branch: ${{ inputs.default-branch }}
-
-      - name: Clone libSmeagol
-        if: ${{ inputs.libSmeagol }}
-        uses: ./repo_under_test/ci/.github/actions/clone_repo
-        with:
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          repository: libSmeagol
-          default-branch: ${{ inputs.default-branch }}
-
-      - name: Clone libCharon
-        if: ${{ inputs.libCharon }}
-        uses: ./repo_under_test/ci/.github/actions/clone_repo
-        with:
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          repository: libCharon
-          default-branch: ${{ inputs.default-branch }}
-
-      - name: Clone libLogger
-        if: ${{ inputs.libLogger }}
-        uses: ./repo_under_test/ci/.github/actions/clone_repo
-        with:
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          repository: libLogger
-          default-branch: ${{ inputs.default-branch }}
-
-      - name: Clone ultiLib
-        if: ${{ inputs.ultiLib }}
-        uses: ./repo_under_test/ci/.github/actions/clone_repo
-        with:
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          repository: ultiLib
           default-branch: ${{ inputs.default-branch }}
         
       - name: PyTest
