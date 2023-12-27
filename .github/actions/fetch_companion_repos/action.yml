@@ -62,12 +62,14 @@ runs:
 
     - name: Trying to checkout dbus-interface-lib on branch ${{ github.ref_name }}
       if: ${{ inputs.dbus-interface-lib }}
-      continue-on-error: true
       shell: bash
       run: |
         cd dbus-interface-lib
-        echo ${{ github.ref_name }}
-        git checkout ${{ github.ref_name }}
+        if git checkout ${{ github.ref_name }}; then
+           echo "Branch ${{ github.ref_name }} successfully checked-out"
+        else
+           echo "Branch ${{ github.ref_name }} not found, using default branch"
+        fi;
 
     - name: Clone marvin-service on default branch
       if: ${{ inputs.marvin-service }}
