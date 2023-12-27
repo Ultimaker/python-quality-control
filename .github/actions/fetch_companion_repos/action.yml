@@ -62,6 +62,7 @@ runs:
     - name: Trying to checkout dbus-interface-lib on branch ${{ github.ref_name }}
       if: ${{ inputs.dbus-interface-lib }}
       continue-on-error: true
+      shell: bash
       run: |
         cd dbus-interface-lib
         echo ${{ github.ref_name }}
@@ -79,6 +80,7 @@ runs:
     - name: Trying to checkout marvin-service on branch ${{ github.ref_name }}
       if: ${{ inputs.marvin-service }}
       continue-on-error: true
+      shell: bash
       run: |
         cd marvin-service
         git checkout ${{ github.ref_name }}
@@ -95,6 +97,7 @@ runs:
     - name: Trying to checkout libPalantir on branch ${{ github.ref_name }}
       if: ${{ inputs.libPalantir }}
       continue-on-error: true
+      shell: bash
       run: |
         cd libPalantir
         git checkout ${{ github.ref_name }}
@@ -111,6 +114,7 @@ runs:
     - name: Trying to checkout libSmeagol on branch ${{ github.ref_name }}
       if: ${{ inputs.libSmeagol }}
       continue-on-error: true
+      shell: bash
       run: |
         cd libSmeagol
         git checkout ${{ github.ref_name }}
@@ -127,6 +131,7 @@ runs:
     - name: Trying to checkout libCharon on branch ${{ github.ref_name }}
       if: ${{ inputs.libCharon }}
       continue-on-error: true
+      shell: bash
       run: |
         cd libCharon
         git checkout ${{ github.ref_name }}
@@ -143,6 +148,7 @@ runs:
     - name: Trying to checkout libLogger on branch ${{ github.ref_name }}
       if: ${{ inputs.libLogger }}
       continue-on-error: true
+      shell: bash
       run: |
         cd libLogger
         git checkout ${{ github.ref_name }}
@@ -159,6 +165,7 @@ runs:
     - name: Trying to checkout ultiLib on branch ${{ github.ref_name }}
       if: ${{ inputs.ultiLib }}
       continue-on-error: true
+      shell: bash
       run: |
         cd ultiLib
         git checkout ${{ github.ref_name }}
