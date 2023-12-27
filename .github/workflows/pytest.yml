@@ -53,118 +53,18 @@ jobs:
   PyTest:
     runs-on: ubuntu-latest
     steps:
-      - name: Clone dbus-interface-lib on default branch
-        if: ${{ inputs.dbus-interface-lib }}
-        uses: actions/checkout@v4
+      - name: Fetch Companion Repositories
+        uses: Ultimaker/python-quality-control/.github/actions/fetch_companion_repos@Github_Actions
         with:
-          repository: Ultimaker/dbus-interface-lib
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: dbus-interface-lib
-          fetch-depth: 0
-
-      - name: Trying to checkout dbus-interface-lib on branch ${{ github.ref_name }}
-        if: ${{ inputs.dbus-interface-lib }}
-        continue-on-error: true
-        run: |
-          cd dbus-interface-lib
-          git checkout ${{ github.ref_name }}
-
-      - name: Clone marvin-service on default branch
-        if: ${{ inputs.marvin-service }}
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/marvin-service
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: marvin-service
-          fetch-depth: 0
-
-      - name: Trying to checkout marvin-service on branch ${{ github.ref_name }}
-        if: ${{ inputs.marvin-service }}
-        continue-on-error: true
-        run: |
-          cd marvin-service
-          git checkout ${{ github.ref_name }}
-
-      - name: Clone libPalantir on default branch
-        if: ${{ inputs.libPalantir }}
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/libPalantir
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: libPalantir
-          fetch-depth: 0
-
-      - name: Trying to checkout libPalantir on branch ${{ github.ref_name }}
-        if: ${{ inputs.libPalantir }}
-        continue-on-error: true
-        run: |
-          cd libPalantir
-          git checkout ${{ github.ref_name }}
-
-      - name: Clone libSmeagol on default branch
-        if: ${{ inputs.libSmeagol }}
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/libSmeagol
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: libSmeagol
-          fetch-depth: 0
-
-      - name: Trying to checkout libSmeagol on branch ${{ github.ref_name }}
-        if: ${{ inputs.libSmeagol }}
-        continue-on-error: true
-        run: |
-          cd libSmeagol
-          git checkout ${{ github.ref_name }}
-
-      - name: Clone libCharon on default branch
-        if: ${{ inputs.libCharon }}
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/libCharon
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: libCharon
-          fetch-depth: 0
-
-      - name: Trying to checkout libCharon on branch ${{ github.ref_name }}
-        if: ${{ inputs.libCharon }}
-        continue-on-error: true
-        run: |
-          cd libCharon
-          git checkout ${{ github.ref_name }}
-
-      - name: Clone libLogger on default branch
-        if: ${{ inputs.libLogger }}
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/libLogger
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: libLogger
-          fetch-depth: 0
-
-      - name: Trying to checkout libLogger on branch ${{ github.ref_name }}
-        if: ${{ inputs.libLogger }}
-        continue-on-error: true
-        run: |
-          cd libLogger
-          git checkout ${{ github.ref_name }}
-
-      - name: Clone ultiLib on default branch
-        if: ${{ inputs.ultiLib }}
-        uses: actions/checkout@v4
-        with:
-          repository: Ultimaker/ultiLib
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          path: ultiLib
-          fetch-depth: 0
-
-      - name: Trying to checkout ultiLib on branch ${{ github.ref_name }}
-        if: ${{ inputs.ultiLib }}
-        continue-on-error: true
-        run: |
-          cd ultiLib
-          git checkout ${{ github.ref_name }}
-
+          dbus-interface-lib: ${{ inputs.dbus-interface-lib }}
+          marvin-service: ${{ inputs.marvin-service }}
+          libPalantir: ${{ inputs.libPalantir }}
+          libSmeagol: ${{ inputs.libSmeagol }}
+          libCharon: ${{ inputs.libCharon }}
+          libLogger: ${{ inputs.libLogger }}
+          ultiLib: ${{ inputs.ultiLib }}
+        
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
