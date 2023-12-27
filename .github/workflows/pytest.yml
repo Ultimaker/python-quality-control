@@ -61,7 +61,7 @@ jobs:
           path: repo_under_test
 
       - name: Fetch Companion Repositories
-        uses: ${{./repo_under_test/inputs.PYTHON_QUALITY_DIR/.github/actions/fetch_companion_repos}}
+        uses: ./repo_under_test/ci/.github/actions/fetch_companion_repos
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           dbus-interface-lib: ${{ inputs.dbus-interface-lib }}
