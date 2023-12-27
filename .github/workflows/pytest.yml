@@ -36,7 +36,8 @@ on:
         type: boolean
         required: false
         default: false
-      default-branch: "Branch to checkout if the project uses a different default branch from the one set in github"
+      default-branch:
+        description: "Branch to checkout if the project uses a different default branch from the one set in github"
         type: string
         required: false
         default: "none"        
