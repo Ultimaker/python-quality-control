@@ -1,0 +1,34 @@
+name: Clone Repository ${{ inputs.repository }}
+description: Clone Requested repository and try to checkout the branch used to test the repository under test (github.ref_name)
+inputs:
+
+  token:
+    description: "The Personal Access Token to fetch the repository"
+    type: string
+    required: true
+
+  repository:
+    description: "The repository name. Must match the github name in Ultimaker organization"
+    type: string
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Clone ${{ inputs.repository }} on default branch
+      uses: actions/checkout@v4
+      with:
+        repository: Ultimaker/${{ inputs.repository }}
+        token: ${{ inputs.token }}
+        path: ${{ inputs.repository }}
+        fetch-depth: 0
+
+    - name: Trying to checkout ${{ inputs.repository }} on branch ${{ github.ref_name }}
+      shell: bash
+      run: |
+        cd ${{ inputs.repository }}
+        if git checkout ${{ github.ref_name }}; then
+           echo "Branch ${{ github.ref_name }} successfully checked-out"
+        else
+           echo "Branch ${{ github.ref_name }} not found, using default branch"
+        fi;

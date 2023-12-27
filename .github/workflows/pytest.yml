@@ -48,11 +48,17 @@ jobs:
           submodules: recursive
           path: repo_under_test
 
+      - name: Clone dbus-interface-lib
+        if: ${{ inputs.dbus-interface-lib }}
+        uses: ./repo_under_test/ci/.github/actions/clone_repo
+        with:
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          repository: dbus-interface-lib
+          
       - name: Fetch Companion Repositories
         uses: ./repo_under_test/ci/.github/actions/fetch_companion_repos
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          dbus-interface-lib: ${{ inputs.dbus-interface-lib }}
           marvin-service: ${{ inputs.marvin-service }}
           libPalantir: ${{ inputs.libPalantir }}
           libSmeagol: ${{ inputs.libSmeagol }}
