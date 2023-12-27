@@ -53,8 +53,15 @@ jobs:
   PyTest:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          submodules: recursive
+          path: repo_under_test
+
       - name: Fetch Companion Repositories
-        uses: Ultimaker/python-quality-control/.github/actions/fetch_companion_repos@Github_Actions
+        uses: ./repo_under_test/${{ inputs.PYTHON_QUALITY_DIR }}/.github/actions/fetch_companion_repos
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           dbus-interface-lib: ${{ inputs.dbus-interface-lib }}
@@ -65,13 +72,6 @@ jobs:
           libLogger: ${{ inputs.libLogger }}
           ultiLib: ${{ inputs.ultiLib }}
         
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          submodules: recursive
-          path: repo_under_test
-
       - name: PyTest
         run: |
           cd repo_under_test
