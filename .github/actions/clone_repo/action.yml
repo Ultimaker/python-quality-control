@@ -21,6 +21,11 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Log Message
+      shell: bash
+      run: |
+        echo -e "\n\n###########  Fetching ${{ inputs.repository }} Repository ###########\n"
+        
     - name: Clone ${{ inputs.repository }} on default branch
       uses: actions/checkout@v4
       with:
@@ -32,7 +37,6 @@ runs:
     - name: Trying to checkout ${{ inputs.repository }} on branch ${{ github.ref_name }}
       shell: bash
       run: |
-        echo -e "\n\n###########  Fetching ${{ inputs.repository }} Repository ###########\n\n"
         cd ${{ inputs.repository }}
         if git checkout ${{ github.ref_name }}; then
           echo "Branch ${{ github.ref_name }} successfully checked-out"
@@ -42,3 +46,5 @@ runs:
             git checkout ${{ inputs.default-branch }}
           fi;
         fi;
+        CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+        echo -e "\n\n###########  Done fetching ${{ inputs.repository }}. Checked out branch: ${CURRENT_BRANCH} ###########\n"
