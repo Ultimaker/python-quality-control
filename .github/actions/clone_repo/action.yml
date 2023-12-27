@@ -1,4 +1,4 @@
-name: Clone Repository ${{ inputs.repository }}
+name: Clone Repository
 description: Clone Requested repository and try to checkout the branch used to test the repository under test (github.ref_name)
 inputs:
 
