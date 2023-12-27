@@ -54,17 +54,41 @@ jobs:
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           repository: dbus-interface-lib
-          
-      - name: Fetch Companion Repositories
-        uses: ./repo_under_test/ci/.github/actions/fetch_companion_repos
+
+      - name: Clone marvin-service
+        if: ${{ inputs.marvin-service }}
+        uses: ./repo_under_test/ci/.github/actions/clone_repo
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
-          marvin-service: ${{ inputs.marvin-service }}
-          libPalantir: ${{ inputs.libPalantir }}
-          libSmeagol: ${{ inputs.libSmeagol }}
-          libCharon: ${{ inputs.libCharon }}
-          libLogger: ${{ inputs.libLogger }}
-          ultiLib: ${{ inputs.ultiLib }}
+          repository: marvin-service
+
+      - name: Clone libSmeagol
+        if: ${{ inputs.libSmeagol }}
+        uses: ./repo_under_test/ci/.github/actions/clone_repo
+        with:
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          repository: libSmeagol
+
+      - name: Clone libCharon
+        if: ${{ inputs.libCharon }}
+        uses: ./repo_under_test/ci/.github/actions/clone_repo
+        with:
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          repository: libCharon
+
+      - name: Clone libLogger
+        if: ${{ inputs.libLogger }}
+        uses: ./repo_under_test/ci/.github/actions/clone_repo
+        with:
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          repository: libLogger
+
+      - name: Clone ultiLib
+        if: ${{ inputs.ultiLib }}
+        uses: ./repo_under_test/ci/.github/actions/clone_repo
+        with:
+          token: ${{ secrets.ULTIMAKER_CI_PAT }}
+          repository: ultiLib
         
       - name: PyTest
         run: |
