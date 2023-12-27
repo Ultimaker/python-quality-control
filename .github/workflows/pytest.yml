@@ -36,6 +36,10 @@ on:
         type: boolean
         required: false
         default: false
+      default-branch: "Branch to checkout if the project uses a different default branch from the one set in github"
+        type: string
+        required: false
+        default: "none"        
 
 jobs:
   PyTest:
@@ -54,6 +58,7 @@ jobs:
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           repository: dbus-interface-lib
+          default-branch: ${{ inputs.default-branch }}
 
       - name: Clone marvin-service
         if: ${{ inputs.marvin-service }}
@@ -61,6 +66,7 @@ jobs:
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           repository: marvin-service
+          default-branch: ${{ inputs.default-branch }}
 
       - name: Clone libPalantir
         if: ${{ inputs.libPalantir }}
@@ -68,6 +74,7 @@ jobs:
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           repository: libPalantir
+          default-branch: ${{ inputs.default-branch }}
 
       - name: Clone libSmeagol
         if: ${{ inputs.libSmeagol }}
@@ -75,6 +82,7 @@ jobs:
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           repository: libSmeagol
+          default-branch: ${{ inputs.default-branch }}
 
       - name: Clone libCharon
         if: ${{ inputs.libCharon }}
@@ -82,6 +90,7 @@ jobs:
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           repository: libCharon
+          default-branch: ${{ inputs.default-branch }}
 
       - name: Clone libLogger
         if: ${{ inputs.libLogger }}
@@ -89,6 +98,7 @@ jobs:
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           repository: libLogger
+          default-branch: ${{ inputs.default-branch }}
 
       - name: Clone ultiLib
         if: ${{ inputs.ultiLib }}
@@ -96,6 +106,7 @@ jobs:
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           repository: ultiLib
+          default-branch: ${{ inputs.default-branch }}
         
       - name: PyTest
         run: |
