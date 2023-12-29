@@ -19,7 +19,7 @@ jobs:
           path: repo_under_test
 
       - name: Fetch Companion Repositories
-        uses: ./repo_under_test/ci/.github/actions/fetch_companion_repos
+        uses: Ultimaker/python-quality-control/.github/actions/fetch_companion_repos@Github_Actions
         with:
           token: ${{ secrets.ULTIMAKER_CI_PAT }}
           default-branch: ${{ inputs.default-branch }}
