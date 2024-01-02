@@ -1,9 +1,7 @@
-#!/bin/bash
-set -eu
+#!/bin/sh
+. ci/references.sh
 
-SCRIPT_DIR=$(dirname "${0}")
-# shellcheck disable=SC1091
-source "${SCRIPT_DIR}/references.sh"
+set -eu
 
 # Log version to track if the non specified version has changed and is breaking stuff.
 pylint --version

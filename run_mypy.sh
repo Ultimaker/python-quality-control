@@ -1,10 +1,7 @@
-#!/bin/bash
+#!/bin/sh
+. ci/references.sh
+
 set -eu
-
-SCRIPT_DIR=$(dirname "${0}")
-# shellcheck disable=SC1091
-source "${SCRIPT_DIR}/references.sh"
-
 # Log version to track if the non specified version has changed and is breaking stuff.
 mypy -V
 
