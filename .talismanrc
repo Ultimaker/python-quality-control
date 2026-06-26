@@ -1,0 +1,6 @@
+fileignoreconfig:
+- filename: .github/copilot-instructions.md
+  checksum: 3a6b1ca5f8d83df36f1fce57285d3b589f1898440dc550943c57dbf6d6adb648
+- filename: AGENTS.md
+  checksum: ccadb976d29d469135c76b275a76e5c885b35131b5fb776c09127c5979fd0c94
+version: ""
