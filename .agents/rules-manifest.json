@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "01-jira-commit-standards.md": "0fae33088a2063cf57a2b9b7189b6ca70ec16e394b8c152d04ef289bf04e4a5f",
+    "02-security-and-paths.md": "f18b11b8ff318e969f812803a72c5d45fe84b78a5d6107bb41a447306de80f93",
+    "04-build-test-and-deployment-rules.md": "50ff331d337857475dfb6fa545e6d557ab5d5f67e700f94184beb8addced7757",
+    "05-ultimaker-skill-discovery-rules.md": "0bfb0df7e64c831eea3630263fed95d2d39444eddd1ecfc55fda21bea92d4fc4",
+    "06-pull-request-lifecycle-rules.md": "2893b4c4f969250c6065d27f108c5547d1926314fd8845a01ef88f4545e95664",
+    "07-owasp-security-rules.md": "d893a45caf28e31945948f52868ed7cd6dcd84481900fab2407575bd9b28f2bd",
+    "08-scoped-changes-and-minimal-diffs.md": "fc397b61f3f2ddc51736934cc02248d6d188c31b7680977dfb66704e060f310b",
+    "09-atomic-bisect-safe-commits.md": "028d1225bd1ad8f75534eb069478fab2864e8530b7b75f14375c26a01d9dbfd9",
+    "10-file-size-and-decomposition-rules.md": "eca20f37445be2691c51560df954bebc7b1baa7b542329db13608c948afcab0a",
+    "12-ai-context-exclusion-rules.md": "dc3997cdaf749718dc3986453d72b889655f55b15f781f4042fc1b551269d946",
+    "13-dependency-management-rules.md": "5892f7965fbed9c019deee732a33e413adf74b473f85e05896887bbb5a500ce8",
+    "34-library-consumer-contract-rules.md": "c46fac292164c4dea413d8cbee032acb75828306e61026b07e254245d1c8d1f9",
+    "40-skill-discovery-index-rules.md": "bb5bd05d14b21fa4f09397f77830b7426fd21d2ff842b3a748413cdb3038217c"
+  }
+}
