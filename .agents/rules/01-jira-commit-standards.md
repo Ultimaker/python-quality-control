@@ -10,6 +10,8 @@ trigger: always_on
 2. **Commit Title Standard**:
    - Every commit title MUST start with bracketed Jira ticket key: `[EMB-463] <Descriptive Title>`.
    - Do NOT use semantic commit prefixes (`feat:`, `fix:`, `chore:`, `refactor:`) in commit or PR titles.
-3. **Pull Request Policy**:
+3. **Commit Message Body (Why & How)**:
+   - Commit messages must include an explanatory body detailing the *why* (business rationale, root cause, or requirement) and the *how* (technical implementation details, affected components).
+4. **Pull Request Policy**:
    - Always open PRs in **DRAFT** state.
    - Merging is strictly restricted to human developers.

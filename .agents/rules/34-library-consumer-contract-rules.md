@@ -1,59 +1,44 @@
 ---
 name: library-consumer-contract
-description: This repository's public surface is mounted into other repositories — every exported symbol, model field and schema is a cross-repository contract.
+description: This repository's public surface (runner scripts, linter configs in cfg/, CI workflows) is mounted into 14+ consumer repositories — any change is a cross-repository contract.
 trigger: glob
-glob: "**/*.py"
+glob: "*.sh"
 paths:
+  - "*.sh"
+  - "cfg/*"
+  - "local/*"
+  - ".github/**/*"
   - "**/*.py"
 ---
 # Library Consumer Contract
 
-This repository is consumed by other repositories rather than run on its own.
-The evidence, from this tree:
+This repository is consumed by downstream repositories rather than run on its own.
+Sibling checkouts across firmware and cloud pin this repository as a submodule at `ci`:
+`okuda`, `opinicus`, `dbus-interface-lib`, `libLogger`, `libCharon`, `print-process-reporting`,
+`misp-service`, `ultiLib`, `libSmeagol`, `mqttHandler`, `ebpf-io-logger`, `UMBusService`, etc.
 
-- sibling checkouts pin this repository as a submodule: `dbus-interface-lib` at `ci`, `libLogger` at `ci`, `okuda` at `ci`, `opinicus` at `ci`
+A service is bounded by its own process: rename an internal function and nothing outside notices.
+This repository has no such boundary. Its public surface is mounted directly into downstream builds and CI pipelines.
 
+## Published Surface & What Constitutes a Breaking Change
 
-A service is bounded by its own process: rename an internal function and
-nothing outside notices. This repository has no such boundary. Its surface is
-mounted into someone else's build, so a change here lands in trees that this
-checkout cannot see and that no test in this repository runs.
+Within the published surface, all of the following are contract changes, not isolated refactors:
 
-## What that makes a breaking change
+1. **Tightening Linter Configuration (`cfg/`)**:
+   - Adding new linter error codes or strict checks in `cfg/.flake8`, `cfg/mypy.ini`, `cfg/pylintrc`, or `cfg/pycodestyle.ini` will immediately fail CI runs across downstream repositories if their code does not comply.
+2. **Modifying Runner Scripts (`run_*.sh`, `references.sh`)**:
+   - Renaming runner scripts, altering command-line arguments, or changing environment variable contracts (such as `PARENT_BRANCH` in `references.sh`) affects all consumers calling `./ci/run_*.sh`.
+3. **Altering Submodule Layout**:
+   - Moving or renaming directories (`cfg/`, `local/`) breaks consumers whose scripts rely on paths like `./ci/cfg/pytest.ini`.
 
-Within the published surface, all of the following are contract changes,
-not refactors:
+## How to Make Contract Changes
 
-1. **Renaming or removing any exported symbol** — class, function, constant,
-   type, or module path. A consumer imports it by name.
-2. **Changing a model or schema field** — removing it, renaming it, narrowing
-   its type, or making an optional field required. Adding an optional field
-   with a default is the only safe shape change.
-3. **Changing a default value or an enum member**, including its wire value.
-4. **Moving a file between packages**, even with the symbol re-exported: a
-   consumer may import the module path directly.
-
-## How to make one anyway
-
-1. **Name the consumers in the pull request.**
-   - `dbus-interface-lib` mounts this repository at `ci`.
-   - `libLogger` mounts this repository at `ci`.
-   - `okuda` mounts this repository at `ci`.
-   - `opinicus` mounts this repository at `ci`.
-
-2. **Land this repository first, then move each consumer's pointer.** A
-   submodule pointer bump is its own commit and names the revision it moves to.
-   Never commit inside a consumer's mounted copy of this tree.
-3. **Additive first.** Where a breaking shape is unavoidable, ship the new
-   surface alongside the old one, migrate the consumers, and remove the old
-   surface in a later ticket — not in the same one.
-4. **Say so in the commit message.** The consumers' agents read this
-   repository's history to work out what moved under them.
-
-## What this rule does not cover
-
-The *meaning* of the contract — which peer owns which definition, what happens
-operationally when a field changes — is the ecosystem-contract investigator's
-subject (`.agents/agents/ecosystem_contract_investigator/agent.md`). This rule
-covers only what is provable from the tree: that the surface is shared, and
-that a change to it is never local.
+1. **Name Affected Consumers in the PR**:
+   - Identify which downstream repositories are affected (e.g. `opinicus`, `okuda`, `dbus-interface-lib`, `libLogger`, `libCharon`).
+2. **Land Changes Here First, Then Update Consumer Pointers**:
+   - Merge the quality control repository changes to `master`.
+   - Update the `ci` submodule pointer in each consumer repository in a dedicated commit referencing the Jira ticket.
+3. **Additive & Coordinated Updates**:
+   - When introducing stricter linter rules, test against active consumer branches and coordinate PRs to clean up lint in consumers before or alongside submodule bumps.
+4. **Transparent Commit Messages**:
+   - Detail the changes and migration steps in the commit message so downstream developers and agents understand rule adjustments.

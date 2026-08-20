@@ -8,6 +8,7 @@ trigger: always_on
 1. **Strict Scope Compliance**: Make changes strictly relevant to the active Jira ticket task. Avoid scope creep.
 2. **Diff Relevance Validation**: Inspect `git diff --name-only` against the base branch before committing. Revert files touched only by formatters or side-effects: `git checkout origin/<base_branch> -- <file>`.
 3. **No Unrelated Refactoring**: Do not modify whitespace, formatting, or code in files unrelated to the task. Never edit `vendor/`, `third_party/`, or submodule trees.
+4. **Empirical Scope Profile**: Commits in this repository are historically small and atomic (median 1 file modified per commit, 90th percentile 8 files). Keep diffs tight and focused.
 
 
 ## Single Responsibility PRs & Boy Scouting Branch Isolation

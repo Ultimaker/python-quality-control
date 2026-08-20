@@ -85,9 +85,7 @@ def is_themeable_source(path: str) -> bool:
 #: This repository's build entry points, detected at bootstrap.
 BUILD_COMMANDS: tuple[str, ...] = ()
 #: Its test runner, if the investigation found one.
-TEST_COMMANDS: tuple[str, ...] = (
-    'cd cfg && pytest -x -q',
-)
+TEST_COMMANDS: tuple[str, ...] = ()
 
 BUILD_TIMEOUT_SECONDS = 900
 

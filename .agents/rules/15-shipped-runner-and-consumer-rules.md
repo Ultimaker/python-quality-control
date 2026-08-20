@@ -14,13 +14,9 @@ configuration that other repositories mount as a git submodule named `ci`.
 `git ls-files` returns no test file and no `conftest.py`. `cfg/` holds only
 `.ini` and `.txt` files.
 
-Rule `04-build-test-and-deployment-rules.md` lists two detected test commands.
-Neither command tests this repository. Do not run them here.
-
-- `pytest -x -q cfg` collects nothing and exits with "no tests ran".
-- `./run_pytest.sh` fails with `FileNotFoundError` for `./ci/cfg/pytest.ini`.
-  That path exists only inside a consumer, where this repository is mounted
-  at `ci`.
+Rule `04-build-test-and-deployment-rules.md` explicitly notes that this repository has no in-repo test suite.
+- `pytest` collects nothing and exits with code 5 ("no tests ran").
+- `./run_pytest.sh` fails with `FileNotFoundError` for `./ci/cfg/pytest.ini` when run locally. That path exists only inside a consumer checkout where this repository is mounted at `ci`.
 
 Verify a change to a runner script in a consumer checkout, or with
 `shellcheck`. State in the pull request which consumer you used.

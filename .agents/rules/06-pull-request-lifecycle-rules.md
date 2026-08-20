@@ -32,5 +32,5 @@ trigger: always_on
 
 This repository preserves merge topology for pull requests and feature branches to maintain ISO-27001 auditability and review history:
 1. **No Force-Pushing Published Review Branches**: Do NOT rewrite history or force-push rebased commits on published branches that have already been opened for PR review.
-2. **Integrate Upstream via Merge**: Integrate upstream base branch updates using `git merge origin/main` (or `/sync-base`) rather than rebasing published history.
+2. **Integrate Upstream via Merge**: Integrate upstream base branch updates using `git merge origin/master` rather than rebasing published history.
 3. **Draft PR Lifecycle**: PRs must remain in DRAFT status until all status checks pass and human review is complete. Merging is strictly restricted to human developers.

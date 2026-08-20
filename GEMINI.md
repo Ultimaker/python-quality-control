@@ -11,28 +11,28 @@ As a dynamic assistant, you must adhere strictly to these principles to maintain
 
 ## 1. Firmware Context & Core Business Value
 
-The **Python Quality Control Framework** is a crucial the centralized library holding formatting rules, style linters, and verification scripts used across all python firmware layers within the UltiMaker 3D printing ecosystem (specifically powering S-Line, Factor 4, and Factor 4+ series of professional/industrial 3D printers).
+The **Python Quality Control Framework** is the centralized repository holding shared formatting rules, style linters, and verification scripts used across 15+ Python firmware and cloud repositories within the UltiMaker ecosystem.
 
 ### Business Value:
-Unified quality gate preventing code formatting drifts and syntax errors across 15+ submodules.
+Unified quality gate preventing code formatting drifts and syntax errors across all downstream services and libraries.
 
-### Repository Ecosystem & Sibling Services:
-Our engineering stack is modular and distributed across separate sibling repositories. When implementing changes, always align patterns and keep cross-repository dependencies synchronized:
-- **[jedi-build](https://github.com/Ultimaker/jedi-build):** Central build orchestrator. Compiles target firmware images, packaging service debians.
-- **[jedi-cookbook](https://github.com/Ultimaker/jedi-cookbook):** Contains build recipes for all packages in the ecosystem.
-- **[python-quality-control](https://github.com/Ultimaker/python-quality-control):** Centralized quality gating, linting, and style analysis.
-- **[stardust-embedded](https://github.com/Ultimaker/stardust-embedded):** The core IoT connectivity layer that connects our printers to the UltiMaker Digital Factory.
-- **[okuda](https://github.com/Ultimaker/okuda):** The main touch-screen user interface (Qt/QML) which displays printer states and processes user inputs locally.
-- **[opinicus](https://github.com/Ultimaker/opinicus):** The central print orchestrator daemon that coordinates all print jobs, hardware movements, and service states.
+### Repository Ecosystem & Consumer Repositories:
+`python-quality-control` is mounted as a git submodule (at path `ci/`) or called directly in CI pipelines across the UltiMaker ecosystem, including:
+- **[opinicus](https://github.com/Ultimaker/opinicus):** The central print orchestrator daemon.
+- **[okuda](https://github.com/Ultimaker/okuda):** The touchscreen user interface daemon.
+- **[dbus-interface-lib](https://github.com/Ultimaker/dbus-interface-lib):** Inter-service DBus bindings.
+- **[libLogger](https://github.com/Ultimaker/libLogger):** Core structured logging library.
+- **[libCharon](https://github.com/Ultimaker/libCharon):** Package and profile management service.
+- **10+ additional firmware and cloud services** (`print-process-reporting`, `misp-service`, `ultiLib`, `libSmeagol`, `mqttHandler`, `ebpf-io-logger`, `UMBusService`, etc.).
 
 ---
 
 ## 2. How the Project is Used & Ecosystem
 
 ### System Integration:
-- `python-quality-control` operates as a shared test & lint utility on the printer's Linux environment.
-- It interfaces with other components via invoked inside Docker containers during commit/build pipelines.
-- It is deployed as part of the system update image (`.swu` update files) compiled by `jedi-build`.
+- `python-quality-control` is consumed as a submodule (`ci/`) by downstream repositories.
+- Downstream repositories invoke `./ci/run_flake8.sh`, `./ci/run_mypy.sh`, `./ci/run_pytest.sh`, etc., from their root directories during pre-commit checks and CI workflows.
+- It is executed in Docker containers and GitHub Actions runners during pull-request and build pipelines.
 
 ### 🔍 Dynamic AI Skill Discovery & Installation
 
@@ -44,7 +44,7 @@ Install the relevant skills before generating code:
 gh skill search ultimaker --owner Ultimaker
 
 # Install specialized skills dynamically
-gh skill install Ultimaker/UltiCortex ultimaker-firmware-developer
+gh skill install Ultimaker/UltiCortex software-architect
 ```
 
 ### Privacy, Compliance & Sovereignty:
@@ -59,7 +59,7 @@ gh skill install Ultimaker/UltiCortex ultimaker-firmware-developer
 ### Jira Work Tracking:
 - We use **Jira** to track all work. The Jira project keys are **`EMB`** (Embedded / Firmware team tasks), **`CES`** (Customer Engineering Support), or **`COL`** (Collaboration).
 - **Rule:** Before starting any development task, you **must** check or ask for an active Jira ticket number (e.g., `EMB-463` or `CES-123`).
-- **Branch Naming:** All feature/bugfix branches must start with the Jira ticket number, formatted as uppercase for the key and lowercase with underscores for the rest:
+- **Branch Naming:** All feature/bugfix branches must start with the Jira ticket number, formatted with either underscores or hyphens:
   ```bash
   EMB-463_improve_code_base_for_agentic_development
   ```
@@ -68,9 +68,9 @@ gh skill install Ultimaker/UltiCortex ultimaker-firmware-developer
 ### Git Commit Standards:
 - **Bracketed Ticket Prefix**: Every Git commit title and GitHub Pull Request title **MUST** start with the bracketed Jira key: `[EMB-XXXX] <Descriptive Title>`.
 - **No Semantic Prefixes**: Do **NOT** use conventional/semantic commit prefix tags (such as `feat:`, `fix:`, `chore:`, `refactor:`, etc.) in commit titles or Pull Request titles.
+- **Commit Message Standard**: Commit messages must include an explanatory body explaining the *why* (the problem or business requirement driving the change) and the *how* (the technical implementation details).
 - **Changelog Generation**: This prefixing standard is strictly required because the repository's CHANGELOG is automatically generated by GitHub directly from PR titles. We do **NOT** use or maintain a local `CHANGELOG.md` file.
 - **Atomic Commits:** Keep commits small, single-topic, and functional.
-- **Commit Message Standard:** Include the *why* (the reason the change was needed), the *how* (implementation details), and other peculiarities.
 
 ### Pull Request & Review Flow:
 - **Strict Branch Guardrails:** **Never** work on or merge directly into `main`, `master`, or `staging` branches. All development must occur on separate feature/bugfix branches.
@@ -79,13 +79,12 @@ gh skill install Ultimaker/UltiCortex ultimaker-firmware-developer
   1. All automated GitHub Actions status checks show **green checkmarks**.
   2. All review topics, comments, and threads are completely **resolved**.
 - **Empty Initiator Checklist:** Every pull request description must end with an empty checklist for the human dev who initiated the agent, confirming they reviewed the code.
-- **Visual Evidence:** UI-impacting changes require visual evidence (screenshots/recordings) added to the PR description (uploaded via browser or `gh-image` tool). Do NOT commit media files directly into the repository.
 - **Human Merge Only:** Under no circumstances should an AI agent attempt to merge its own Pull Request. Merging is **strictly restricted to humans**.
 
 ### Support Portal Review & Alert Annotations:
-- **Support Documentation Audit Rule:** When introducing a **new feature** or **changing existing behavior**, you **MUST** search the UltiMaker Support page: `https://support.makerbot.com/s/global-search/` and analyze if any relevant public-facing support pages are impacted.
-  - If support page changes are required, add a **warning block** (`> [!WARNING]`) in the PR description advising the developer to contact the support team. Outline exactly **what changed**, **why**, and **how**, citing any existing support page URLs.
-- **PR Alert Annotations:** Always annotate pull request and merge descriptions with standard GitHub markdown alerts to guide the reviewer:
+- **Support Documentation Audit Rule:** When introducing a **new feature** or **changing existing behavior**, search the UltiMaker Support page (`https://support.makerbot.com/s/global-search/`) to evaluate whether any public documentation is impacted.
+  - If support page changes are required, add a **warning block** (`> [!WARNING]`) in the PR description advising the developer to contact the support team.
+- **PR Alert Annotations:** Always annotate pull request and merge descriptions with standard GitHub markdown alerts:
   ```markdown
   > [!NOTE]
   > Useful information that users should know, even when skimming content.
@@ -99,64 +98,59 @@ gh skill install Ultimaker/UltiCortex ultimaker-firmware-developer
 ## 4. Directory Organization & Tech-Stack Architecture
 
 ### Tech-Stack:
-- **Languages**: Python, Shell
-- **Build/Build Tooling**: None - raw runner scripts
-- **Core Frameworks**: flake8, pylint, pytest, vulture, mypy
+- **Languages**: Shell, Python
+- **Build/Build Tooling**: Shell runner scripts, pre-commit
+- **Core Linters & Tools**: flake8, pylint, pytest, vulture, mypy, shellcheck
 
 ### Core Directory Layout:
-- `/cfg/`: Linters rules configurations (.flake8, pycodestyle.ini).
-- `/run_flake8.sh`: Shell executable triggers.
+- `/cfg/`: Centralized linter rule configurations (`.flake8`, `mypy.ini`, `pycodestyle.ini`, `pylintrc`, `pytest.ini`, `vulture_whitelist.py`).
+- `/run_*.sh`: Shipped shell runner scripts invoked from consumer repositories (e.g. `run_flake8.sh`, `run_mypy.sh`, `run_pytest.sh`, `references.sh`).
+- `/local/`: Local development variants of runner scripts.
 
 ---
 
 ## 5. Designing for Future AI Generated Code
 
-- **Decomposed File Footprints:** Keep individual modules and files as small as possible. Individual files (Python modules, C++ sources, headers, or QML) should ideally remain **around 300 lines (max 400 lines is acceptable)** to minimize token overhead and keep context-windows clean.
-- **Leverage Third-Party Libraries:** Favor mature, well-maintained third-party frameworks and libraries instead of building custom code from scratch. Search NPM, PyPI, or Conan registries before implementing custom helpers.
+- **Decomposed File Footprints:** Keep individual modules and runner scripts small and modular (ideally under 300 lines, max 400 lines).
+- **Consumer Compatibility:** Any change to a runner script or configuration in `cfg/` will affect all 14+ consumer repositories. Always preserve backwards compatibility or coordinate submodule updates across consumers.
 
 ---
 
 ## 6. Local Development Environment & Setup
 
 ### Requirements & Prerequisites:
-Directly invoke linter hooks locally: `./run_flake8.sh <path-to-target>`
+- This repository has no standalone test suite of its own.
+- Verify shell script syntax with `shellcheck`.
+- Verify changes locally with `pre-commit run --all-files`.
+- To test changes end-to-end, test the updated runner scripts within a checkout of a consumer repository (e.g., `opinicus` or `okuda`).
 
 ---
 
-## 7. Security & OWASP IoT Top 10 Mitigations
+## 7. Security & OWASP Mitigations
 
-Our software is deployed on industrial 3D printing equipment. We must actively mitigate the **OWASP IoT Top 10** vulnerabilities:
-
-1. **Weak, Guessable, or Hardcoded Credentials:** NEVER hardcode passwords, private keys, or API tokens. Our signing keys are backed in GCP Secret Manager and retrieved securely at runtime.
-2. **Insecure Network Services:** Minimize listening ports. All local/network service interfaces must authenticate requests and utilize TLS/SSL where applicable.
-3. **Insecure Ecosystem Interfaces:** Secure all API endpoints, DBus, and MQTT communication paths. Validate and sanitize all incoming payloads.
-4. **Lack of Secure Update Mechanism:** S-Line/Factor 4 firmware updates use the SquashFS SWU format with detached GPG signatures. Never bypass the GPG signature check.
-5. **Use of Insecure or Outdated Components:** Keep our Python packages, Conan packages, and debian dependencies up to date.
-6. **Insufficient Privacy Protection:** Securely handle user profiles, PII, and telemetry. Never write passwords or sensitive tokens to local log files.
-7. **Insecure Data Transfer and Storage:** Encrypt sensitive credentials and configurations. Use RAM-backed filesystems (`/dev/shm`) for temporary decryption targets.
-8. **Lack of Device Management:** Integrate with UltiMaker Digital Factory securely.
-9. **Insecure Default Settings:** Enforce safe defaults out-of-the-box.
-10. **Lack of Physical Hardening:** Secure local terminal and SSH ports. Enforce strict `umssh.sh` password-less or authenticated connections.
+1. **Weak, Guessable, or Hardcoded Credentials:** NEVER hardcode passwords, private keys, or API tokens.
+2. **Input Validation:** Ensure runner shell scripts safely quote arguments and paths to avoid shell injection.
+3. **Privacy & Data Protection:** Treat sensitive tokens and credentials with strict protection. Never output credentials in CI logs.
+4. **Dependency Hygiene:** Keep linter dependencies and pre-commit hooks updated.
 
 ---
 
 ## 8. Companion Guides
 
-Consult the following guides found within the repository or ecosystem:
-- **README.md**: Standard setup and compilation guidelines.
-- None extra.
+- **README.md**: Setup and overview.
+- **.agents/rules/**: Active agent rules catalog.
 
 ---
 
 ## 9. Automated Pre-Commit Tooling & Closed-Loop Cycle
 
-To support a robust, automated closed-loop development cycle, this repository enforces automatic static quality checks using `pre-commit` before any git commit is recorded.
+This repository enforces automatic static quality checks using `pre-commit` before any git commit is recorded.
 
 ### Core Architecture & Checks:
 - **Fast Static Analysis:** Hooks run formatters, linters, and credentials scanning to ensure code quality and safety.
 - **Commit Guardrails:**
-  1. **Jira Ticket Reference:** Commit messages *must* reference a Jira ticket prefix.
-  2. **Agent Artifact & Scratch File Block:** Blocks staging/committing agent-specific tracking files (`task.md`, `implementation_plan.md`, `walkthrough.md`, scratch files, temporary `test_` scripts).
+  1. **Jira Ticket Reference:** Commit messages *must* reference a Jira ticket prefix (`[EMB-XXXX]`).
+  2. **Agent Artifact Block:** Blocks staging/committing agent-specific tracking files (`task.md`, `implementation_plan.md`, `walkthrough.md`, scratch files).
   3. **Talisman Secret Scanner:** ThoughtWorks Talisman pre-commit scanner blocks committed credentials/secrets.
   4. **Local Paths Reference Blocker:** Prevents hardcoded local absolute path references (e.g., `/home/<username>/`).
 
@@ -166,22 +160,19 @@ To support a robust, automated closed-loop development cycle, this repository en
    pip install pre-commit
    pre-commit install --hook-type pre-commit --hook-type commit-msg
    ```
-2. **Manual Execution:** Run checks manually on staged or all files:
+2. **Manual Execution:** Run checks manually on all files:
    ```bash
    pre-commit run --all-files
    ```
 
 ---
 
-## 10. Visual Validation & Verification (V&V) Guidelines
+## 10. Validation & Verification (V&V) Guidelines
 
-Every feature implementation, UI refinement, or bug fix **MUST** undergo a systematic Validation & Verification (V&V) process.
+Every configuration change, script update, or rule refinement **MUST** undergo systematic verification:
 
 ### Scenarios to Test:
-- **Happy Path Scenarios:** Verify standard successful workflows. Ensure that no console exceptions, network errors, or visual regressions occur.
-- **Unhappy Path Scenarios:** Verify edge cases, input limits, and error handling (e.g., failed DBus bindings, offline state, empty profiles).
-- **Physical Verification / Emulation:** Where applicable, use the `ultimaker-printer-ssh` skill to push the generated build output onto a networked test printer:
-  ```bash
-  ./deploy_to_printer.sh <printer-ip>
-  ```
-- **PR Visual Evidence Mandate:** For visual changes (Okuda UI, griffin_html), provide viewport screenshots/recordings of both happy and unhappy paths in your PR description.
+- **Static Gate Verification:** Run `pre-commit run --all-files` and ensure 100% passing checks.
+- **Quad-Agent Parity:** Run `python3 .agents/hooks/audit_quad_agent_parity.py .` to ensure all agent harnesses are synchronized.
+- **Consumer Verification:** Test runner script execution against a consumer repository checkout to verify that `references.sh` and config files operate correctly.
+- **Pre-PR Quality Gate:** Run `bash scripts/verify_and_create_pr.sh` before submitting or updating pull requests.

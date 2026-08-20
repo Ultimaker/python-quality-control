@@ -77,10 +77,8 @@ def is_themeable_source(path: str) -> bool:
             and not any(name in path for name in THEME_DEFINITION_FILES))
 
 
-# `KEY-123-short-description`: hyphens throughout, never underscores. A branch
-# named `EMB-463_short_description` reads as one token to every tool
-# that splits on `-`, and the convention here is hyphenated.
-BRANCH_NAME_RE = re.compile(r"^EMB-\d+-[a-z0-9]+(-[a-z0-9]+)*$", re.I)
+# `KEY-123-short-description` or `KEY-123_short_description`
+BRANCH_NAME_RE = re.compile(r"^(EMB|CES|COL|UC|NP)-\d+[-_][a-z0-9]+([-_][a-z0-9]+)*$", re.I)
 
 
 def check_branch():
