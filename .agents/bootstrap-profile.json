@@ -1,0 +1,287 @@
+{
+  "repository": {
+    "name": "python-quality-control",
+    "source": "git-remote:origin"
+  },
+  "stacks": {
+    "has_frontend": false,
+    "has_cloud": false,
+    "has_cpp": false,
+    "has_infra": false,
+    "has_qml": false,
+    "has_freertos": false,
+    "has_debian": false,
+    "has_materials": false,
+    "has_rust": false
+  },
+  "git": {
+    "commits_sampled": 46,
+    "jira_keys": {
+      "CES": 10,
+      "EMB": 2
+    },
+    "allowed_jira_keys": [
+      "EMB",
+      "CES"
+    ],
+    "branch_jira_key": "EMB",
+    "history_jira_key": "CES",
+    "dominant_jira_key": "EMB",
+    "semantic_prefix_ratio": 0.0
+  },
+  "base_branch": "master",
+  "submodules": [],
+  "ci": {
+    "providers": [
+      "github-actions"
+    ],
+    "workflows": [
+      ".github/workflows/flake8.yml",
+      ".github/workflows/mypy.yml",
+      ".github/workflows/pycodestyle.yml",
+      ".github/workflows/pylint.yml",
+      ".github/workflows/pytest.yml",
+      ".github/workflows/vulture.yml"
+    ],
+    "signals": {
+      "tests": true,
+      "lint": true,
+      "build": false
+    }
+  },
+  "tests": {
+    "frameworks": [
+      "pytest"
+    ],
+    "commands": [
+      "cd cfg && pytest -x -q",
+      "./run_pytest.sh"
+    ]
+  },
+  "linters": {
+    "ruff": false,
+    "black": false,
+    "flake8": false,
+    "mypy": true,
+    "eslint": false,
+    "prettier": false,
+    "stylelint": false,
+    "clang_format": false,
+    "clang_tidy": false,
+    "pre_commit_config": false
+  },
+  "lint_scripts": [],
+  "protected_branches": [
+    "master"
+  ],
+  "cpp": {},
+  "c": {},
+  "python": {},
+  "ui": {
+    "has_ui": false,
+    "design_md_exists": false,
+    "token_sources": [],
+    "uses_stardust": false
+  },
+  "pr_template": {
+    "exists": true,
+    "path": ".github/PULL_REQUEST_TEMPLATE.md",
+    "has_why": true,
+    "has_what": true,
+    "has_how": true,
+    "content": "Jira ticket: [EMB-463](https://ultimaker.atlassian.net/browse/EMB-463)\n\n## Why\n<!-- Describe the problem, user request, or business context driving this change -->\n\n## What\n<!-- High-level summary of the changes introduced in this PR -->\n\n## How\n<!-- Technical & architectural implementation details, design decisions, and changed components -->\n\n## Verification & Validation (V&V)\n<!-- Detail how changes were tested: unit tests, integration tests, E2E visual checks, screenshots/recordings -->\n- [ ] Automated unit/integration tests pass\n- [ ] Pre-commit static checks pass cleanly on this branch's diff (`scripts/verify_and_create_pr.sh`)\n- [ ] Visual evidence attached for UI changes (if applicable)\n\n## PR Checklist\n- [ ] Initiating developer reviewed AI-generated code\n- [ ] No hardcoded absolute local paths or secrets introduced\n- [ ] Standing file-size and complexity budgets respected\n"
+  },
+  "build_commands": [],
+  "directory_map": [
+    {
+      "name": "local",
+      "count": 9,
+      "extensions": ".sh"
+    },
+    {
+      "name": "cfg",
+      "count": 7,
+      "extensions": ".ini, .txt"
+    },
+    {
+      "name": "scripts",
+      "count": 2,
+      "extensions": ".py"
+    }
+  ],
+  "artifact_dirs": [],
+  "has_api_surface": false,
+  "interface_dirs": [],
+  "api_doc_paths": [],
+  "has_storybook": false,
+  "host": {
+    "os": "linux",
+    "has_secret_tool": true,
+    "has_security": false
+  },
+  "vendored": [],
+  "generated": [],
+  "evidence": {
+    "has_systemd": false,
+    "systemd_units": [],
+    "has_udev": false,
+    "udev_rules": [],
+    "has_dbus": false,
+    "dbus_policy": [],
+    "has_machine_json": false,
+    "machine_json_files": [],
+    "has_gcode": false,
+    "gcode_evidence": [],
+    "has_po_files": false,
+    "po_files": [],
+    "has_debian_packaging": false,
+    "debian_evidence": [],
+    "shell_script_count": 18
+  },
+  "license": {
+    "declared": null,
+    "source": null,
+    "proprietary": false
+  },
+  "has_package_json": false,
+  "node_package_dirs": [],
+  "python_packaging_manifests": [],
+  "file_count": 36,
+  "complexity": {},
+  "skills": {
+    "catalog_root": "~/dev/um/UltiCortex",
+    "catalog_size": 28,
+    "matched": [
+      "software-architect"
+    ]
+  },
+  "observations": [
+    {
+      "category": "ecosystem_contract",
+      "title": "This repository's public surface is mounted into other repositories",
+      "evidence": [
+        "sibling checkouts pin this repository as a submodule: `dbus-interface-lib` at `ci`, `libLogger` at `ci`, `okuda` at `ci`, `opinicus` at `ci`"
+      ],
+      "question": "Which consumers pin this repository, and what is the ordering discipline for a change that spans both trees? Rule 34 states the part that is provable from this tree; the rest belongs here.",
+      "draft_rule": "Every exported symbol, model field and schema in the published surface is a contract with the repositories that mount it. Land the change here first, then move each consumer's pointer; prefer additive shape changes and name the consumers in the pull request.",
+      "confidence": "high",
+      "data": {
+        "surface": "library_consumer_contract",
+        "consumers": [
+          {
+            "repo": "dbus-interface-lib",
+            "mount": "ci"
+          },
+          {
+            "repo": "libLogger",
+            "mount": "ci"
+          },
+          {
+            "repo": "okuda",
+            "mount": "ci"
+          },
+          {
+            "repo": "opinicus",
+            "mount": "ci"
+          }
+        ],
+        "surface_dirs": [],
+        "manifests": [],
+        "has_entry_point": false,
+        "nested_checkout": false,
+        "paths": [
+          "**/*.py"
+        ],
+        "reasons": [
+          "sibling checkouts pin this repository as a submodule: `dbus-interface-lib` at `ci`, `libLogger` at `ci`, `okuda` at `ci`, `opinicus` at `ci`"
+        ]
+      }
+    },
+    {
+      "category": "commit-style",
+      "title": "Commit messages carry explanatory bodies",
+      "evidence": [
+        "52% of sampled commits have a body",
+        "average body length 3.8 lines"
+      ],
+      "question": "Should agents be required to write a body explaining why/how, not just a subject line?",
+      "draft_rule": "Every commit message MUST include a body explaining why the change was needed and how it works \u2014 a subject line alone is not enough.",
+      "confidence": "medium",
+      "data": {}
+    },
+    {
+      "category": "commit-style",
+      "title": "Commits are small and tightly scoped",
+      "evidence": [
+        "median 1 files per commit, 90th percentile 8"
+      ],
+      "question": "Should the scope rule name a concrete file-count expectation derived from this repository's own history?",
+      "draft_rule": "Keep commits tightly scoped: this repository's median commit touches 1 files. A commit touching more than 8 files needs an explicit justification in the message.",
+      "confidence": "medium",
+      "data": {}
+    },
+    {
+      "category": "git-workflow",
+      "title": "History keeps merge commits",
+      "evidence": [
+        "12/45 sampled commits are merges (mostly pull request merges)",
+        "`Merge pull request`: 12, `Merge branch`: 0"
+      ],
+      "question": "Is the merge commit intentional (preserving branch topology), and should agents therefore NOT rebase published branches?",
+      "draft_rule": "This repository preserves merge topology. Do not rewrite or rebase branches that have already been pushed; integrate with merges.",
+      "confidence": "medium",
+      "data": {}
+    }
+  ],
+  "hook_verification": {
+    "block-secrets": {
+      "fired": true,
+      "blocked": true,
+      "detail": "staged violation rejected",
+      "at": "2026-08-20T07:31:15+00:00",
+      "sha": "ed7d5f2"
+    },
+    "block-absolute-paths": {
+      "fired": true,
+      "blocked": true,
+      "detail": "staged violation rejected",
+      "at": "2026-08-20T07:31:15+00:00",
+      "sha": "ed7d5f2"
+    },
+    "pretool-guard": {
+      "fired": true,
+      "blocked": true,
+      "detail": "secret payload denied",
+      "at": "2026-08-20T07:31:15+00:00",
+      "sha": "ed7d5f2"
+    },
+    "block-name-matched-kill": {
+      "fired": true,
+      "blocked": true,
+      "detail": "pkill denied",
+      "at": "2026-08-20T07:31:15+00:00",
+      "sha": "ed7d5f2"
+    },
+    "check-rule-frontmatter": {
+      "fired": true,
+      "blocked": null,
+      "detail": "exit 0 (advisory; executed, not violated)",
+      "at": "2026-08-20T07:31:15+00:00",
+      "sha": "ed7d5f2"
+    },
+    "audit-quad-agent-parity": {
+      "fired": true,
+      "blocked": null,
+      "detail": "exit 0 (advisory; executed, not violated)",
+      "at": "2026-08-20T07:31:15+00:00",
+      "sha": "ed7d5f2"
+    },
+    "check-upstream-alignment": {
+      "fired": true,
+      "blocked": null,
+      "detail": "exit 0 (advisory; executed, not violated)",
+      "at": "2026-08-20T07:31:16+00:00",
+      "sha": "ed7d5f2"
+    }
+  }
+}
