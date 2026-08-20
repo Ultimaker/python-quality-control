@@ -15,7 +15,7 @@ SUBSTITUTION = re.compile(r"\$\(|`|\$\{")
 
 REASON = """Refused: this kills processes selected by name, not by PID.
 
-Worktrees on this machine share a repository, a Godot binary and a build cache,
+Worktrees on this machine share a repository, Python virtual environments, Node modules, or Docker build caches and a build cache,
 so a name match reaches other sessions' processes as readily as your own.
 
 Do this instead:
