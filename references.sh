@@ -17,7 +17,7 @@ CHANGED_FILES=$(echo "${CHANGED_BRANCH_FILES}" "${CHANGED_LOCAL_FILES}" | tr ' '
 
 # Remove excluded files from changed files
 if [ -f "${EXCLUDE_FILE_NAME}" ]; then
-    CHANGED_FILES=$(echo "${CHANGED_FILES}" | grep -v -f "${EXCLUDE_FILE_NAME}")
+    CHANGED_FILES=$(echo "${CHANGED_FILES}" | grep -v -f "${EXCLUDE_FILE_NAME}" | cat)
 fi
 
 export PARENT_BRANCH
