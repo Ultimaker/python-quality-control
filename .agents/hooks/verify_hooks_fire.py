@@ -125,8 +125,6 @@ def exercise_run_only(results, script, hook_id, *args):
 
 
 def exercise_e2e_evidence_gate(results):
-    return  # Removed for firmware context
-    return  # Removed for firmware context
     """The E2E-evidence gate (cloud/frontend repos only). Prove BOTH directions
     on synthetic fixtures fed through the hook's testing seam: a user-facing
     diff with an evidence-less body must BLOCK, and the same diff with evidence
