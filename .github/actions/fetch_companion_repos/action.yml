@@ -71,3 +71,10 @@ runs:
           repository: mqttHandler
           default-branch: ${{ inputs.default-branch }}
           
+      - name: Clone eventHandler
+        uses: Ultimaker/python-quality-control/.github/actions/clone_repo@master
+        with:
+          token: ${{ inputs.token }}
+          repository: eventHandler
+          default-branch: ${{ inputs.default-branch }}
+      
